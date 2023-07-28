@@ -1,38 +1,31 @@
-name: Build and Publish
+name: Auto Release
 on:
   push:
-    branches:
-      - main
-
-env:
-  IMAGE_VERSION: ${{ github.run_number }}
+    tags:
+      - '*'
+permissions:
+  contents: write
 
 jobs:
-  build:
-    name: Build
+  goreleaser:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v1
-
-      - name: Set up Go
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+          
+      - name: Set up Go   
         uses: actions/setup-go@v2
         with:
-          go-version: 1.19
-
-      - name: Build and tag Docker image
-        run: |
-          docker build -t your-username/your-image-name:${{ env.IMAGE_VERSION }} .
-          docker push your-username/your-image-name:${{ env.IMAGE_VERSION }}
-
-      - name: Publish new release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          go-version: 1.17
+          
+      - name: Run GoReleaser
+        uses: goreleaser/goreleaser-action@v2
         with:
-          tag_name: v${{ env.IMAGE_VERSION }}
-          release_name: Release v${{ env.IMAGE_VERSION }}
-          body: This is an automated release.
-          draft: false
-          prerelease: false
+          # either 'goreleaser' (default) or 'goreleaser-pro'
+          distribution: goreleaser
+          version: latest
+          args: release --rm-dist
+        env:
+          GITHUB_TOKEN: ${{ secrets.MY_GITHUB_TOKEN }}
