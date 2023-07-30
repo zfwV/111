@@ -6,7 +6,7 @@ FROM golang:latest
 WORKDIR /https://github.com/zfwV/111/blob/main/Dockerfile
 # 将本地文件复制到容器中
 #COPY ..
-COPY /https://github.com/zfwV/111/blob/main/Dockerfile
+COPY . /https://github.com/zfwV/111/blob/main/Dockerfile
 # 复制 go.mod 和 go.sum 到工作目录中
 #COPY go.mod go.sum ./
 
