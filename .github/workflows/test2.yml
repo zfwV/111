@@ -1,10 +1,6 @@
 name: Docker Image CI
 
-on:
-  push:
-    tags:
-      - '*'
-
+on:   workflow_dispatch
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -21,8 +17,8 @@ jobs:
       - name: Login to DockerHub
         uses: docker/login-action@v1 
         with:
-          username: VVzfw
-          password: zfw637313
+          username: ${{ secrets.DOCKER_USER }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
       - name: Build and push the docker image
         uses: docker/build-push-action@v2
         with:
