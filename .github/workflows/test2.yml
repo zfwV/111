@@ -6,10 +6,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Get git tag
-        id: tag
-        uses: dawidd6/action-get-tag@v1
-        with:
-          strip_v: true
+        #id: tag
+        #uses: dawidd6/action-get-tag@v1
+        uses: dawidd6/action-docker-publish-changed@v3.0.1
+        #with:
+          #strip_v: true
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v1
       - name: Set up Docker Buildx
@@ -24,4 +25,4 @@ jobs:
         with:
           platforms: linux/amd64,linux/arm64,linux/arm/v7
           push: true
-          tags: timothyye/godns:latest,timothyye/godns:${{steps.tag.outputs.tag}}
+          #tags: timothyye/godns:latest,timothyye/godns:${{steps.tag.outputs.tag}}
